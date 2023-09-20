@@ -29,9 +29,32 @@ st.title("MinIO Video in Streamlit")
 bucket = "your-bucket-name"
 object_name = "your-video-name.mp4"
 video_file_path = fetch_video_from_minio(bucket, object_name)
+
+
+
+
+def trim_video(video_path, start_time, end_time):
+    with VideoFileClip(video_path) as video:
+        new_video = video.subclip(start_time, end_time)
+        new_video_path = f"{video_path}_trimmed.mp4"
+        new_video.write_videofile(new_video_path)
+        return new_video_path
+
+st.title(" Video Editing Capabilities")
+
 if video_file_path:
     st.video(video_file_path)
+    
+    # Trim functionality
+    st.header("Trim Video")
+    start_time = st.number_input("Start Time (seconds)", min_value=0, max_value=600, value=0)
+    end_time = st.number_input("End Time (seconds)", min_value=1, max_value=600, value=10)
+    if st.button("Trim Video"):
+        trimmed_video_path = trim_video(video_file_path, start_time, end_time)
+        st.video(trimmed_video_path)
 
+# Cropping can be added similarly using moviepy's crop functionality.
+      
 # To run the Streamlit app
 # streamlit run app.py
 # Replace 'MINIO_ENDPOINT', 'YOUR_ACCESS_KEY', 'YOUR_SECRET_KEY', 'your-bucket-name', and 'your-video-name.mp4' with the appropriate values for your MinIO setup.
