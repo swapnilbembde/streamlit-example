@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import streamlit as st
 import image_support
-from image_support import image_crop
-from image_support import Crop
+from image_support import image_crop, Crop
 
 image_support._DEBUG = True
 
