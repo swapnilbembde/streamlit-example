@@ -1,83 +1,23 @@
-from __future__ import annotations
-
 import streamlit as st
-from image_support import image_crop, Crop
+from PIL import Image
 
-# image_support._DEBUG = True
+def crop_image(img, coords):
+    return img.crop(coords)
 
+st.title("Image Cropping App")
 
-def main() -> None:
-    st.title("Get Image Crop")
+uploaded_file = st.file_uploader("Upload an image...", type=['jpg', 'png', 'jpeg'])
 
-    st.sidebar.header("Parameters")
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Uploaded Image.', use_column_width=True)
 
-    fixed_aspect_ratio = st.sidebar.checkbox("Fixed aspect cropping", value=False)
+    st.write("Set cropping coordinates:")
+    x1 = st.slider('x1', 0, image.width, 0)
+    y1 = st.slider('y1', 0, image.height, 0)
+    x2 = st.slider('x2', x1, image.width, image.width)
+    y2 = st.slider('y2', y1, image.height, image.height)
 
-    if fixed_aspect_ratio:
-        aspect_ratio = st.sidebar.slider(
-            "Aspect ratio",
-            value=1.0,
-            min_value=0.2,
-            max_value=5.0,
-            step=0.2,
-        )
-    else:
-        aspect_ratio = None
-
-    min_width = st.sidebar.slider(
-        "Minimum width",
-        value=0,
-        min_value=0,
-        max_value=200,
-    )
-    min_height = st.sidebar.slider(
-        "Minimum height",
-        value=0,
-        min_value=0,
-        max_value=200,
-    )
-
-    max_width = st.sidebar.slider(
-        "Maximum width",
-        value=1000,
-        min_value=0,
-        max_value=1000,
-    )
-    max_height = st.sidebar.slider(
-        "Maximum height",
-        value=1000,
-        min_value=0,
-        max_value=1000,
-    )
-
-    rule_of_thirds = st.sidebar.checkbox("Rule of Thirds", value=False)
-    circular_crop = st.sidebar.checkbox("Circular Crop", value=False)
-
-    f = st.file_uploader("Choose a image")
-    if f is None:
-        return
-
-    bytes_image = f.getvalue()
-
-    col_left, col_right = st.columns(2)
-
-    with col_left:
-        image_cropped = image_crop(
-            bytes_image,
-            crop=Crop(aspect=aspect_ratio),
-            min_width=min_width,
-            min_height=min_height,
-            max_width=max_width,
-            max_height=max_height,
-            rule_of_thirds=rule_of_thirds,
-            circular_crop=circular_crop,
-        )
-
-    if image_cropped is None:
-        return
-
-    with col_right:
-        st.image(image_cropped)
-
-
-main()
+    if st.button("Crop Image"):
+        cropped_img = crop_image(image, (x1, y1, x2, y2))
+        st.image(cropped_img, caption='Cropped Image.', use_column_width=True)
