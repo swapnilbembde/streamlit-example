@@ -9,7 +9,7 @@ image_support._DEBUG = True
 
 
 def main() -> None:
-    st.title("React Image Crop")
+    st.title("Get Image Crop")
 
     st.sidebar.header("Parameters")
 
@@ -61,7 +61,7 @@ def main() -> None:
 
     bytes_image = f.getvalue()
 
-    col_left, col_right = st.beta_columns(2)
+    col_left, col_right = st.columns(2)
 
     with col_left:
         image_cropped = image_crop(
