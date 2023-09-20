@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import streamlit as st
-import streamlit_image_crop
-from streamlit_image_crop import image_crop
-from streamlit_image_crop import Crop
+import image_support
+from image_support import image_crop
+from image_support import Crop
 
 streamlit_image_crop._DEBUG = True
 
