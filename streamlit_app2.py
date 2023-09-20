@@ -3,7 +3,7 @@ from __future__ import annotations
 import streamlit as st
 from image_support import image_crop, Crop
 
-image_support._DEBUG = True
+# image_support._DEBUG = True
 
 
 def main() -> None:
