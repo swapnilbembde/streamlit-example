@@ -5,7 +5,7 @@ import image_support
 from image_support import image_crop
 from image_support import Crop
 
-streamlit_image_crop._DEBUG = True
+image_support._DEBUG = True
 
 
 def main() -> None:
